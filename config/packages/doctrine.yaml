@@ -1,0 +1,68 @@
+doctrine:
+    dbal:
+        url: '%env(resolve:DATABASE_URL)%'
+        profiling_collect_backtrace: '%kernel.debug%'
+        use_savepoints: true
+        
+        driver: 'pdo_mysql'
+        charset: utf8mb4
+        default_table_options:
+            charset: utf8mb4
+            collate: utf8mb4_unicode_ci
+            
+        schema_cache:
+            enabled: true
+            
+        result_cache:
+            enabled: true
+
+    orm:
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        enable_lazy_ghost_objects: true
+        
+        mappings:
+            App:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Entity'
+                prefix: 'App\Entity'
+                alias: App
+                
+        metadata_cache_driver:
+            type: pool
+            pool: doctrine.metadata_cache
+            
+        query_cache_driver:
+            type: pool
+            pool: doctrine.query_cache
+            
+        result_cache_driver:
+            type: pool
+            pool: doctrine.result_cache
+            
+        dql:
+            string_functions:
+                YEAR: DoctrineExtensions\Query\Mysql\Year
+                MONTH: DoctrineExtensions\Query\Mysql\Month
+                DAY: DoctrineExtensions\Query\Mysql\Day
+                DATE_FORMAT: DoctrineExtensions\Query\Mysql\DateFormat
+                
+        filters:
+            softdeleteable:
+                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+                enabled: false
+
+when@prod:
+    doctrine:
+        orm:
+            auto_generate_proxy_classes: false
+            metadata_cache_driver:
+                type: pool
+                pool: doctrine.metadata_cache
+            query_cache_driver:
+                type: pool
+                pool: doctrine.query_cache
+            result_cache_driver:
+                type: pool
+                pool: doctrine.result_cache

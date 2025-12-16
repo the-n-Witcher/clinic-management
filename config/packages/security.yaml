@@ -1,0 +1,49 @@
+security:
+    enable_authenticator_manager: true
+    
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        App\Entity\User:
+            algorithm: auto
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            lazy: true
+            provider: app_user_provider
+            custom_authenticator: App\Security\LoginAuthenticator
+            logout:
+                path: app_logout
+                target: app_login
+
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /
+                always_remember_me: true
+
+    access_control:
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/register, roles: PUBLIC_ACCESS }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/doctor, roles: ROLE_DOCTOR }
+        - { path: ^/reception, roles: ROLE_RECEPTIONIST }
+        - { path: ^/nurse, roles: ROLE_NURSE }
+        - { path: ^/patient, roles: ROLE_PATIENT }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/, roles: PUBLIC_ACCESS }
+
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_DOCTOR, ROLE_RECEPTIONIST, ROLE_NURSE, ROLE_PATIENT]
+        ROLE_DOCTOR: [ROLE_PATIENT]
+        ROLE_RECEPTIONIST: [ROLE_PATIENT]
+        ROLE_NURSE: [ROLE_PATIENT]

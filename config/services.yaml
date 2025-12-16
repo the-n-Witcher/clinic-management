@@ -1,0 +1,50 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php,EventSubscriber}'
+
+    App\Service\AppointmentService:
+        arguments:
+            $logger: '@monolog.logger.appointment'
+    
+    App\Service\AuditLogger:
+        arguments:
+            $security: '@security.helper'
+
+    App\Repository\:
+        resource: '../src/Repository/'
+        tags: ['doctrine.repository_service']
+
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    App\Security\Voter\:
+        resource: '../src/Security/Voter/'
+        tags: ['security.voter']
+
+    App\EventSubscriber\:
+        resource: '../src/EventSubscriber/'
+        tags: ['kernel.event_subscriber']
+
+    App\Command\:
+        resource: '../src/Command/'
+        tags: ['console.command']
+
+    App\Command\SendAppointmentRemindersCommand:
+        arguments:
+            $appointmentRepository: '@App\Repository\AppointmentRepository'
+            $notificationService: '@App\Service\NotificationService'
+            $entityManager: '@doctrine.orm.entity_manager'
+        tags: ['console.command']
+    
+    App\Command\SendInvoiceRemindersCommand:
+        arguments:
+            $invoiceRepository: '@App\Repository\InvoiceRepository'
+            $notificationService: '@App\Service\NotificationService'
+            $entityManager: '@doctrine.orm.entity_manager'
+        tags: ['console.command']

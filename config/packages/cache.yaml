@@ -1,0 +1,35 @@
+framework:
+    cache:
+        app: cache.adapter.filesystem
+        system: cache.adapter.system
+        directory: '%kernel.cache_dir%/pools'
+        
+        annotations:
+            enabled: false
+        serializer:
+            enabled: false
+        property_info:
+            enabled: false
+        validator:
+            enabled: false
+            
+        pools:
+            doctrine.result_cache:
+                adapter: cache.adapter.filesystem
+                default_lifetime: 300
+                
+            doctrine.query_cache:
+                adapter: cache.adapter.filesystem
+                default_lifetime: 600
+                
+            validator.cache:
+                adapter: cache.adapter.filesystem
+                
+            serializer.cache:
+                adapter: cache.adapter.filesystem
+                
+            router.cache:
+                adapter: cache.adapter.filesystem
+                
+            translator.cache:
+                adapter: cache.adapter.filesystem

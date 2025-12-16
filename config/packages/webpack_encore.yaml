@@ -1,0 +1,21 @@
+webpack_encore:
+    # Путь, где Encore будет хранить скомпилированные ассеты
+    output_path: '%kernel.project_dir%/public/build'
+    
+    # Использовать manifest.json для определения имен файлов
+    cache: false
+    
+    # Включить обработку изображений
+    copy_files: true
+    
+    # Путь для статических файлов
+    build_dir: 'build'
+    
+    # Настройки для разных сред
+    builds:
+        app: '%kernel.project_dir%/public/build'
+        
+    # Настройки для интеграции с Symfony
+    strict_mode: true
+    integrity: false
+    json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'

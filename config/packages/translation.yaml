@@ -1,0 +1,9 @@
+framework:
+    translator:
+        default_path: '%kernel.project_dir%/translations'
+        fallbacks:
+            - en
+            - ru
+        cache: 'clinic.translator_cache'
+        providers:
+            # nbg gthtdjls мляяя
